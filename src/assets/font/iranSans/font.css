@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'IranSans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('IRANSansWeb(FaNum)_Medium.woff2') format('woff2'),
+        url('IRANSansWeb(FaNum)_Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'IranSans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('IRANSansWeb(FaNum)_Bold.woff2') format('woff2'),
+        url('IRANSansWeb(FaNum)_Bold.woff') format('woff');
+}
+
+body,
+button,
+input {
+    font-family: 'IranSans', sans-serif;
+    font-weight: 500;
+}
