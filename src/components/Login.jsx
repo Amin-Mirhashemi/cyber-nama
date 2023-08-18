@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import pt from "prop-types";
 import Popup from "./Popup";
 import Icon from "./icon";
@@ -10,6 +9,7 @@ import CloseCircle from "./icon/CloseCircle";
 import { apiLogin, apiSignup } from "@/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { AuthContext } from "@/providers/AuthProvider";
+import { handleError } from "@/utils/handleError";
 
 function Login({ show, onClose }) {
   const [mode, setMode] = useState(null);
@@ -25,12 +25,40 @@ function Login({ show, onClose }) {
       setIsLoggedIn(true);
       onClose();
     },
+    onError: handleError,
   });
 
   const handleLogin = () => {
     login.mutate({
       username: loginUsername,
       password: loginPassword,
+    });
+  };
+
+  const [name, setName] = useState("");
+  const [signupUsername, setSignupUsername] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  // const [bio, setBio] = useState('')
+
+  const signup = useMutation({
+    mutationFn: apiSignup,
+    onSuccess: (res) => {
+      Cookies.set("token", res.data.access_token);
+      setUser({
+        name,
+        username: signupUsername,
+      });
+      setIsLoggedIn(true);
+      onClose();
+    },
+    onError: handleError,
+  });
+
+  const handleSignUp = () => {
+    signup.mutate({
+      name,
+      username: signupUsername,
+      password: signupPassword,
     });
   };
 
@@ -88,6 +116,8 @@ function Login({ show, onClose }) {
               <Button
                 className="w-full mt-12"
                 label="ورود"
+                loading={login.isLoading}
+                disabled={!loginUsername || !loginPassword}
                 onClick={handleLogin}
               />
               <Button
@@ -99,7 +129,48 @@ function Login({ show, onClose }) {
             </>
           )}
 
-          {mode === "signUp" && <>صفحه ثبت نام</>}
+          {mode === "signUp" && (
+            <>
+              <Input
+                label="نام کاربری"
+                type="email"
+                value={signupUsername}
+                className="mt-8"
+                onChange={setSignupUsername}
+                placeholder="ایمیل شما"
+              />
+
+              <Input
+                label="رمز عبور"
+                value={signupPassword}
+                onChange={setSignupPassword}
+                className="mt-4"
+                type="password"
+              />
+
+              <Input
+                label="نام و نام خانوادگی"
+                value={name}
+                onChange={setName}
+                className="mt-4"
+                placeholder="نامی که به دیگران نمایش داده می‌شود"
+              />
+
+              <Button
+                className="w-full mt-12"
+                label="ثبت نام"
+                loading={signup.isLoading}
+                disabled={!signupPassword || !signupUsername}
+                onClick={handleSignUp}
+              />
+              <Button
+                className="w-full mt-4 mb-12"
+                variant="transparent"
+                label="حساب کاربری دارید؟"
+                onClick={() => setMode("logIn")}
+              />
+            </>
+          )}
         </>
       </Popup>
     )

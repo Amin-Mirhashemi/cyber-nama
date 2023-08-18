@@ -67,11 +67,12 @@ const Popup = ({
         };
       }
     }
+    return {};
   }, [anchorElement, position]);
 
   return (
     <div className={popupClasses} ref={popupRef} style={positionStyles}>
-      <div className="w-full">{children}</div>
+      <div className="w-full h-full">{children}</div>
     </div>
   );
 };

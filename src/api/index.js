@@ -6,13 +6,14 @@ function getToken() {
   return token ? `Bearer ${token}` : undefined;
 }
 
-// Create a new Axios instance
-const instance = axios.create({
-  baseURL: "https://negar.iran.liara.run", // Your API base URL
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: getToken(),
-  },
-});
+const createInstance = () => {
+  return axios.create({
+    baseURL: "https://negar.iran.liara.run",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+  });
+};
 
-export default instance;
+export default createInstance;

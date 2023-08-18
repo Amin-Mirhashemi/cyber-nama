@@ -1,14 +1,16 @@
-import clsx from "clsx";
 import Icon from "./icon";
 import pt from "prop-types";
 import Menu from "./icon/Menu";
 import User from "./icon/User";
 import mainIcon from "/icon.svg";
 import UserCircle from "./icon/UserCircle";
-import { useContext, useState } from "react";
 import useMobileDetect from "@/hooks/screen-size";
+import { useContext, useState, useRef } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
+
 import Login from "./Login";
+import UserMenu from "./UserMenu";
+import ChangePassword from "./ChangePassword";
 
 function Layout({ children }) {
   const { isLoggedIn } = useContext(AuthContext);
@@ -17,12 +19,33 @@ function Layout({ children }) {
 
   const [isShowMenu, setShowMenu] = useState(false);
   const [isShowLoginModal, setShowLoginModal] = useState(false);
+  const [isShowPasswordModal, setShowPasswordModal] = useState(false);
 
   const handleIconClick = () => {
     if (!isMobile && !isLoggedIn) {
       setShowLoginModal(true);
+    } else {
+      setShowMenu(true);
     }
   };
+
+  const openLoginModal = () => {
+    setShowMenu(false);
+
+    setTimeout(() => {
+      setShowLoginModal(true);
+    }, 100);
+  };
+
+  const openPasswordModal = () => {
+    setShowMenu(false);
+
+    setTimeout(() => {
+      setShowPasswordModal(true);
+    }, 100);
+  };
+
+  const userMenuIcon = useRef(null);
 
   return (
     <>
@@ -36,24 +59,38 @@ function Layout({ children }) {
           </>
         )}
 
-        <Icon
-          onClick={handleIconClick}
-          className="mr-auto flex gap-2 text-white items-center"
-        >
-          {isMobile ? (
-            <Menu />
-          ) : isLoggedIn ? (
-            <UserCircle />
-          ) : (
-            <>
-              <User />
-              ورود و ثبت‌نام
-            </>
-          )}
-        </Icon>
+        <span ref={userMenuIcon} className="mr-auto">
+          <Icon onClick={handleIconClick} className="flex gap-2 items-center">
+            {isMobile ? (
+              <Menu />
+            ) : isLoggedIn ? (
+              <UserCircle />
+            ) : (
+              <>
+                <User />
+                ورود و ثبت‌نام
+              </>
+            )}
+          </Icon>
+        </span>
       </div>
+
       {children}
+
       <Login show={isShowLoginModal} onClose={() => setShowLoginModal(false)} />
+
+      <UserMenu
+        show={isShowMenu}
+        onClose={() => setShowMenu(false)}
+        anchor={userMenuIcon.current}
+        openLoginModal={openLoginModal}
+        openPasswordModal={openPasswordModal}
+      />
+
+      <ChangePassword
+        show={isShowPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+      />
     </>
   );
 }
