@@ -5,12 +5,14 @@ import User from "./icon/User";
 import mainIcon from "/icon.svg";
 import UserCircle from "./icon/UserCircle";
 import useMobileDetect from "@/hooks/screen-size";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, createContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 
 import Login from "./Login";
 import UserMenu from "./UserMenu";
 import ChangePassword from "./ChangePassword";
+
+export const LayoutProvider = createContext(null);
 
 function Layout({ children }) {
   const { isLoggedIn } = useContext(AuthContext);
@@ -75,7 +77,9 @@ function Layout({ children }) {
         </span>
       </div>
 
-      {children}
+      <LayoutProvider.Provider value={openLoginModal}>
+        {children}
+      </LayoutProvider.Provider>
 
       <Login show={isShowLoginModal} onClose={() => setShowLoginModal(false)} />
 

@@ -2,6 +2,7 @@ import "@/App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "./components/Layout";
 import AuthProvider from "./providers/AuthProvider";
+import Router from "./Router";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +20,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Layout>hello bitches</Layout>
+        <Layout>
+          <Router />
+        </Layout>
       </AuthProvider>
     </QueryClientProvider>
   );

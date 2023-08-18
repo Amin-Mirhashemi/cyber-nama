@@ -24,4 +24,5 @@ a:hover {
 * {
   box-sizing: border-box;
   overflow-x: hidden;
+  line-height: normal !important;
 }
