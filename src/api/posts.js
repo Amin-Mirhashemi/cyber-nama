@@ -9,3 +9,7 @@ export function apiGetPost() {
 export function apiGetPostLight() {
   return axios().get(`/post/${postId}/light`);
 }
+
+export function apiComment(text) {
+  return axios().post("/comment", { postId, text });
+}
