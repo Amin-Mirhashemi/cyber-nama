@@ -13,3 +13,11 @@ export function apiGetPostLight() {
 export function apiComment(text) {
   return axios().post("/comment", { postId, text });
 }
+
+export function apiLike() {
+  return axios().post("/like", { entityId: postId });
+}
+
+export function apiUnLike() {
+  return axios().post("/unlike", { entityId: postId });
+}

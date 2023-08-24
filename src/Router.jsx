@@ -5,15 +5,24 @@ import {
 } from "react-router-dom";
 import Landing from "./pages/landing";
 import Live from "./pages/live";
+import Layout from "./components/Layout";
 
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Landing />,
+    element: (
+      <Layout>
+        <Landing />
+      </Layout>
+    ),
   },
   {
     path: "/live",
-    element: <Live />,
+    element: (
+      <Layout>
+        <Live />
+      </Layout>
+    ),
   },
   {
     path: "*",

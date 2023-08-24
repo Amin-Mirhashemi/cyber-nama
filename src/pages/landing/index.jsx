@@ -9,8 +9,8 @@ import { LayoutProvider } from "@/components/Layout";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const calculateRemainingTime = (timestamp) => {
-  if (!timestamp) return;
+const calculateRemainingTime = (timestamp, prev) => {
+  if (!timestamp) return prev;
 
   const now = new Date().getTime();
   const timeDifference = Math.max(0, timestamp - now);
@@ -30,15 +30,22 @@ export default function Landing() {
 
   const navigate = useNavigate();
 
-  const [remainingTime, setRemainingTime] = useState(null);
+  const [remainingTime, setRemainingTime] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   const isMobile = useMobileDetect();
 
   const publishTime = data?.data?.publishTime;
 
   useEffect(() => {
+    setRemainingTime((prev) => calculateRemainingTime(publishTime, prev));
+
     const interval = setInterval(() => {
-      setRemainingTime(calculateRemainingTime(publishTime));
+      setRemainingTime((prev) => calculateRemainingTime(publishTime, prev));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -56,10 +63,12 @@ export default function Landing() {
     }
   };
 
+  const title = data?.data?.text.split("%%%")[0] || "لطفا شکیبا باشید ...";
+
   return (
     <div className="relative p-6 sm:p-20 min-h-[765px] max-h-full w-full md:columns-2 lg:columns-3 columns-1">
       <div className="pt-20 overflow-hidden">
-        <b className="text-5xl">{data?.data?.text || "لطفا شکیبا باشید ..."}</b>
+        <b className="text-5xl">{title}</b>
 
         {remainingTime && (
           <div className="flex items-center justify-around items-stretch mt-12">

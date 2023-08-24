@@ -26,3 +26,9 @@ a:hover {
   overflow-x: hidden;
   line-height: normal !important;
 }
+
+.overflow-y-scroll::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}

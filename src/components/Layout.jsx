@@ -4,9 +4,10 @@ import Menu from "./icon/Menu";
 import User from "./icon/User";
 import mainIcon from "/icon.svg";
 import UserCircle from "./icon/UserCircle";
+import { useNavigate } from "react-router-dom";
 import useMobileDetect from "@/hooks/screen-size";
-import { useContext, useState, useRef, createContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
+import { useContext, useState, useRef, createContext } from "react";
 
 import Login from "./Login";
 import UserMenu from "./UserMenu";
@@ -18,6 +19,8 @@ function Layout({ children }) {
   const { isLoggedIn } = useContext(AuthContext);
 
   const isMobile = useMobileDetect();
+
+  const navigate = useNavigate();
 
   const [isShowMenu, setShowMenu] = useState(false);
   const [isShowLoginModal, setShowLoginModal] = useState(false);
@@ -49,15 +52,35 @@ function Layout({ children }) {
 
   const userMenuIcon = useRef(null);
 
+  const goHome = () => {
+    navigate("/");
+  };
+
+  const handleLiveClick = () => {
+    if (isLoggedIn) {
+      navigate("/live");
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
   return (
     <>
       <div className="w-full sm:py-6 sm:px-12 p-4 flex gap-4 items-center">
-        <img src={mainIcon} className="w-8 sm:w-fit" />
+        <img
+          src={mainIcon}
+          className="w-8 sm:w-fit cursor-pointer"
+          onClick={goHome}
+        />
 
         {!isMobile && (
           <>
-            <span>خانه</span>
-            <span>سایبرنما</span>
+            <span className="cursor-pointer" onClick={goHome}>
+              خانه
+            </span>
+            <span className="cursor-pointer" onClick={handleLiveClick}>
+              سایبرنما
+            </span>
           </>
         )}
 

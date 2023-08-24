@@ -12,7 +12,7 @@ import CloseCircle from "./icon/CloseCircle";
 import { AuthContext } from "@/providers/AuthProvider";
 import useMobileDetect from "@/hooks/screen-size";
 import Cookies from "js-cookie";
-
+import { useNavigate } from "react-router-dom";
 function UserMenu({
   show,
   onClose,
@@ -28,6 +28,23 @@ function UserMenu({
     Cookies.remove("token");
     setIsLoggedIn(false);
     setUser(null);
+  };
+
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate("/");
+    onClose();
+  };
+
+  const handleLiveClick = () => {
+    if (isLoggedIn) {
+      navigate("/live");
+    } else {
+      openLoginModal();
+    }
+
+    onClose();
   };
 
   return (
@@ -53,11 +70,17 @@ function UserMenu({
 
         {isMobile && (
           <>
-            <Icon className="flex items-center gap-2 py-4">
+            <Icon
+              className="flex items-center gap-2 py-4"
+              onClick={handleHomeClick}
+            >
               <Home />
               خانه
             </Icon>
-            <Icon className="flex items-center gap-2 py-4">
+            <Icon
+              className="flex items-center gap-2 py-4"
+              onClick={handleLiveClick}
+            >
               <Video />
               سایبر نما
             </Icon>
