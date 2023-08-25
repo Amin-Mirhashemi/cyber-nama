@@ -21,3 +21,7 @@ export function apiLike() {
 export function apiUnLike() {
   return axios().post("/unlike", { entityId: postId });
 }
+
+export function apiEditPost(data) {
+  return axios().patch("/post", data);
+}

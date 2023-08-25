@@ -6,12 +6,13 @@ function getToken() {
   return token ? `Bearer ${token}` : undefined;
 }
 
-const createInstance = () => {
+const createInstance = (config = {}) => {
   return axios.create({
     baseURL: "https://negar.iran.liara.run",
     headers: {
       "Content-Type": "application/json",
       Authorization: getToken(),
+      ...config,
     },
   });
 };

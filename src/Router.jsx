@@ -6,6 +6,7 @@ import {
 import Landing from "./pages/landing";
 import Live from "./pages/live";
 import Layout from "./components/Layout";
+import Admin from "./pages/admin";
 
 const routes = createBrowserRouter([
   {
@@ -21,6 +22,14 @@ const routes = createBrowserRouter([
     element: (
       <Layout>
         <Live />
+      </Layout>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <Layout>
+        <Admin />
       </Layout>
     ),
   },
